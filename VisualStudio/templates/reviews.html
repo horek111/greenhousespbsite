@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Логотип">
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Главная</a></li>
+                <li><a href="{{ url_for('reviews') }}">Отзывы</a></li>
+                <li><a href="{{ url_for('about') }}">О нас</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="reviews-container">
+        <h1>Отзывы наших клиентов</h1>
+        
+        {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-header">
+                <div class="review-image">
+                    {% if review.image %}
+                        <img src="{{ url_for('static', filename=review.image) }}" alt="{{ review.author }}">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='default.png') }}" alt="Default Image">
+                    {% endif %}
+                </div>
+                <div class="review-info">
+                    <span class="author">{{ review.author }}</span>
+                    <div class="stars">
+                        {% for i in range(review.rating) %}
+                        ★
+                        {% endfor %}
+                    </div>
+                    <span class="date">{{ review.date.strftime('%d.%m.%Y') }}</span>
+                </div>
+            </div>
+            <p class="review-text">{{ review.text }}</p>
+        </div>
+        {% endfor %}
+    </section>
+</body>
+</html>

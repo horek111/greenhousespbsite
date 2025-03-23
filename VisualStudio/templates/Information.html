@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Логотип">
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Главная</a></li>
+                <li><a href="{{ url_for('reviews') }}">Отзывы</a></li>
+                <li><a href="{{ url_for('about') }}">О нас</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="about-content">
+        <h1>О нас</h1>
+        <p>Мы — компания, которая специализируется на продаже товаров для кемпинга и активного отдыха.</p>
+        <p>Наша миссия — сделать ваш отдых комфортным и безопасным.</p>
+    </section>
+</body>
+</html>
