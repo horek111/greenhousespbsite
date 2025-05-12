@@ -150,15 +150,19 @@ def delete_review(review_id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('admin_panel'))
+    
     if request.method == 'POST':
         if (request.form['username'] == os.getenv('ADMIN_LOGIN') and
                 check_password_hash(os.getenv('ADMIN_PASSWORD_HASH'), request.form['password'])):
             user = User(os.getenv('ADMIN_LOGIN'))
             login_user(user)
-            return redirect(url_for('admin_panel'))
+            next_page = request.args.get('next')
+            return redirect(next_page or url_for('admin_panel'))
         return render_template('login.html', error="Неверные учетные данные")
+    
     return render_template('login.html')
-
 
 @app.route('/logout')
 @login_required

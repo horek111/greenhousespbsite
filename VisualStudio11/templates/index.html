@@ -27,6 +27,10 @@
                 <li><a href="{{ url_for('index') }}">Главная</a></li>
                 <li><a href="{{ url_for('reviews') }}">Отзывы</a></li>
                 <li><a href="{{ url_for('about') }}">О нас</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('admin_panel') }}">Админ-панель</a></li>
+                    <li><a href="{{ url_for('logout') }}" class="logout-link">Выйти</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
@@ -59,8 +63,7 @@
                     <div class="product-image-container">
                         <img class="product-image"
                              src="{{ url_for('static', filename=product.image) }}"
-                             alt="{{ product.name }}"
-                             onerror="this.src='{{ url_for('static', filename='images/default-product.png') }}'">
+                             alt="{{ product.name }}">
                     </div>
                     <div class="product-info">
                         <h2>{{ product.name }}</h2>
