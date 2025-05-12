@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Логотип">
+            </div>
+            <ul class="nav-links">
+                <li class="phone">
+                    <a href="tel:{{ phone_number }}">{{ phone_number }}</a>
+                </li>
+                <li><a href="{{ url_for('index') }}">Главная</a></li>
+                <li><a href="{{ url_for('reviews') }}">Отзывы</a></li>
+                <li><a href="{{ url_for('about') }}">О нас</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="info-panel">
+        <div class="search-container">
+            <form action="/" method="GET" class="search-wrapper">
+                <div class="search-input-group">
+                    <input
+                        type="text"
+                        name="q"
+                        placeholder="Поиск по товарам..."
+                        value="{{ search_query }}"
+                        list="search-suggestions"
+                    >
+                    <datalist id="search-suggestions">
+                        {% for product in products %}
+                            <option value="{{ product.name }}">
+                        {% endfor %}
+                    </datalist>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <section class="products">
+        {% if products %}
+            {% for product in products %}
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img class="product-image"
+                             src="{{ url_for('static', filename=product.image) }}"
+                             alt="{{ product.name }}"
+                             onerror="this.src='{{ url_for('static', filename='images/default-product.png') }}'">
+                    </div>
+                    <div class="product-info">
+                        <h2>{{ product.name }}</h2>
+                        <ul class="product-specs">
+                            {% for char in product.characteristics %}
+                            <li><strong>{{ char.key }}:</strong> {{ char.value }}</li>
+                            {% endfor %}
+                        </ul>
+                    <div class="product-price">{{ "%.2f"|format(product.price) }} ₽</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-results">Товары не найдены</p>
+        {% endif %}
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.product-image img').forEach(img => {
+                img.onerror = function() {
+                    this.src = '{{ url_for("static", filename="images/default-product.png") }}';
+                };
+            });
+        });
+    </script>
+</body>
+</html>
